@@ -31,7 +31,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             // Process your updates here
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
-//        Фича 2
+//        Фича 3
     }
 
 }
