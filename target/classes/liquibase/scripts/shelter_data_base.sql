@@ -13,5 +13,5 @@ CREATE TABLE volunteers (
     id BIGINT PRIMARY KEY,
     first_name TEXT NOT NULL,
     phone_number TEXT NOT NULL,
-    shelter_id BIGINT NOT NULL
+    shelter BIGINT NOT NULL
 );
