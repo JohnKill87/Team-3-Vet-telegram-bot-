@@ -2,12 +2,12 @@
 
 -- changeset john:1
 CREATE TABLE shelter (
-    id BIGINT PRIMARY KEY,
-    name TEXT NOT NULL,
-    address TEXT NOT NULL,
-    work_time TEXT NOT NULL,
-    security_contact_details TEXT NOT NULL
-);
+    id SERIAL PRIMARY KEY,
+    work_schedule VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    phone_number_security VARCHAR(255) NOT NULL,
+    safety_precautions VARCHAR(255) NOT NULL
+    );
 
 CREATE TABLE volunteers (
     id BIGINT PRIMARY KEY,
