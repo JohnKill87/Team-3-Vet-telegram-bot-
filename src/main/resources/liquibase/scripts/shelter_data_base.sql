@@ -15,4 +15,3 @@ CREATE TABLE volunteers (
     phone_number TEXT NOT NULL,
     shelter_id  BIGINT NOT NULL
 );
--
