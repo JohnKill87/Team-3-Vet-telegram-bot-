@@ -1,5 +1,7 @@
 package pro.sky.telegrambot.model;
 
+import pro.sky.telegrambot.model.shelter.Shelter;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;

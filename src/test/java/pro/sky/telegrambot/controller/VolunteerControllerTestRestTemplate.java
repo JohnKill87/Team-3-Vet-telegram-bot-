@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import pro.sky.telegrambot.model.Shelter;
 import pro.sky.telegrambot.model.Volunteer;
+import pro.sky.telegrambot.model.shelter.Shelter;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class VolunteerControllerTestRestTemplate {

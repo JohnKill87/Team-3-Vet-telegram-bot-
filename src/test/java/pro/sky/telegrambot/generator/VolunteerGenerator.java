@@ -1,6 +1,5 @@
 package pro.sky.telegrambot.generator;
 
-import pro.sky.telegrambot.model.Shelter;
 import pro.sky.telegrambot.model.Volunteer;
 
 public class VolunteerGenerator {

@@ -1,5 +1,7 @@
 package pro.sky.telegrambot.model;
 
+import pro.sky.telegrambot.model.shelter.Shelter;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
