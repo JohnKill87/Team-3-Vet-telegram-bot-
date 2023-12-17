@@ -19,3 +19,11 @@ shelter_id INT,
 data BYTEA,
 FOREIGN KEY (shelter_id) REFERENCES shelter(id)
 );
+
+--changeset roma:2
+
+CREATE TABLE volunteers (
+id BIGINT PRIMARY KEY,
+first_name TEXT NOT NULL,
+phone_number TEXT NOT NULL,
+shelter_id  SERIAL NOT NULL
