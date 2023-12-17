@@ -7,6 +7,9 @@ import pro.sky.telegrambot.repository.VolunteerRepository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Класс содержащий методы для работы с волонтёрами.
+ */
 @Service
 public class VolunteerService {
 
@@ -15,18 +18,42 @@ public class VolunteerService {
         this.volunteerRepository = volunteerRepository;
     }
 
+    /**
+     * Добавление волонтёра в БД.
+     * Используется метод репозитория {@link org.springframework.data.jpa.repository.JpaRepository#save(Object)}
+     * @param volunteer Добавляемый волонтер
+     * @return Добавленного волонтёра
+     */
     public Volunteer addVolunteer(Volunteer volunteer) {
         return volunteerRepository.save(volunteer);
     }
 
+    /**
+     * Поиск волонтёра по его идентификатору в БД.
+     * Используется метод репозитория {@link org.springframework.data.jpa.repository.JpaRepository#findById(Object)}
+     * @param id Идентификатор искомого волонтёра.
+     * @return Найденного волонтёр.
+     */
     public Optional<Volunteer> findVolunteerById(Long id) {
         return volunteerRepository.findById(id);
     }
 
+    /**
+     * Поиск волонтёра по его идентификатору приюта в БД.
+     * Используется метод репозитория {@link VolunteerRepository#findByShelterId(Long)}
+     * @param shelterId Идентификатор нужного приюта.
+     * @return Найденного волонтёр.
+     */
     public List<Volunteer> findVolunteerByShelterId(Long shelterId) {
         return volunteerRepository.findByShelterId(shelterId);
     }
 
+    /**
+     * Удаление волонтёра из БД.
+     * Используется метод репозитория {@link org.springframework.data.jpa.repository.JpaRepository#delete(Object)}
+     * @param volunteer Удаляемый волонтёр.
+     * @return Удаленного волонтёра.
+     */
     public Volunteer deleteVolunteer(Volunteer volunteer) {
         volunteerRepository.delete(volunteer);
         return volunteer;
