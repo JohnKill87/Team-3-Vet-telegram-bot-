@@ -2,10 +2,7 @@ package pro.sky.telegrambot.model;
 
 import pro.sky.telegrambot.model.shelter.Shelter;
 
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.Objects;
 
 @MappedSuperclass
@@ -22,7 +19,6 @@ public abstract class Person {
     private Shelter shelter;
 
     public Person() {
-
     }
 
     public Person(Long id, String firstName, String phoneNumber, Shelter shelter) {
@@ -32,8 +28,7 @@ public abstract class Person {
         this.shelter = shelter;
     }
 
-    public Person(Long id, String firstName, String phoneNumber) {
-        this.id = id;
+    public Person(String firstName, String phoneNumber) {
         this.firstName = firstName;
         this.phoneNumber = phoneNumber;
     }
