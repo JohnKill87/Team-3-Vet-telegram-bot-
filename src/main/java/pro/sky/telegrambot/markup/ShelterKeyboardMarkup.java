@@ -1,17 +1,10 @@
 package pro.sky.telegrambot.markup;
 
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.request.KeyboardButton;
-import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.request.SendPhoto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.telegrambot.model.Client;
 import pro.sky.telegrambot.repository.ClientRepository;
-import pro.sky.telegrambot.repository.ShelterRepository;
-
-import javax.ws.rs.NotFoundException;
 
 
 @Component

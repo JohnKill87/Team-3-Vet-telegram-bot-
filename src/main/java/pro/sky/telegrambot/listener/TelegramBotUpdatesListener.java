@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pro.sky.telegrambot.markup.CatShelterMarkup;
-import pro.sky.telegrambot.markup.DogShelterMarkup;
+import pro.sky.telegrambot.service.CatShelterServiceImpl;
+import pro.sky.telegrambot.service.DogShelterServiceImpl;
 import pro.sky.telegrambot.markup.HelloKeyboardMarkup;
 import pro.sky.telegrambot.markup.ShelterKeyboardMarkup;
 import pro.sky.telegrambot.repository.ShelterRepository;
@@ -24,16 +24,16 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
-    private final DogShelterMarkup dogShelterMarkup;
+    private final DogShelterServiceImpl dogShelterMarkup;
 
-    private final CatShelterMarkup catShelterMarkup;
+    private final CatShelterServiceImpl catShelterServiceImpl;
 
     private final ShelterKeyboardMarkup shelterKeyboardMarkup;
     private boolean isWaitNumber = false;
     @Autowired
-    public TelegramBotUpdatesListener(DogShelterMarkup dogShelterMarkup, CatShelterMarkup catShelterMarkup, ShelterRepository shelterRepository, ShelterKeyboardMarkup shelterKeyboardMarkup) {
+    public TelegramBotUpdatesListener(DogShelterServiceImpl dogShelterMarkup, CatShelterServiceImpl catShelterServiceImpl, ShelterRepository shelterRepository, ShelterKeyboardMarkup shelterKeyboardMarkup) {
         this.dogShelterMarkup = dogShelterMarkup;
-        this.catShelterMarkup = catShelterMarkup;
+        this.catShelterServiceImpl = catShelterServiceImpl;
         this.shelterKeyboardMarkup = shelterKeyboardMarkup;
     }
 
@@ -57,55 +57,57 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             Long chat_id = update.message().chat().id();
 
 
-            if (textMessage != null && textMessage.equals("/start") || textMessage.equals(smile_arrow + " В начало")) {
+            if (textMessage != null && textMessage.equals("/start")
+                    || textMessage.equals(smile_arrow + " В начало")) {
                 executeSendMessage(HelloKeyboardMarkup.boardMarkupCatAndDog(chat_id));
 
             } else if (textMessage.equals(smile_cat + " Приют для кошек")) {
-                executeSendMessage(CatShelterMarkup.catBoardMarkup(chat_id));
+                executeSendMessage(catShelterServiceImpl.boardMarkup(chat_id));
 
             } else if (textMessage.equals(smile_cat + " Узнать информацию о приюте")) {
-                executeSendMessage(CatShelterMarkup.catShelterBoardMarkup(chat_id));
+                executeSendMessage(catShelterServiceImpl.shelterBoardMarkup(chat_id));
             } else if (textMessage.equals(smile_cat + "Рассказать о приюте")) {
-                executeSendMessage(catShelterMarkup.catShelterStory(chat_id));
+                executeSendMessage(catShelterServiceImpl.shelterStory(chat_id));
             } else if (textMessage.equals(smile_cat + "Расписание работы")) {
-                executeSendMessage(catShelterMarkup.getCatWorkScheduleFromDB(chat_id));
+                executeSendMessage(catShelterServiceImpl.getWorkScheduleFromDB(chat_id));
             } else if (textMessage.equals(smile_cat + "Адрес приюта")) {
-                executeSendMessage(catShelterMarkup.getCatAddressFromDB(chat_id));
+                executeSendMessage(catShelterServiceImpl.getAddressFromDB(chat_id));
             } else if (textMessage.equals(smile_cat + "Схема проезда")) {
-                executePhoto(catShelterMarkup.getCatDrivingDirections(chat_id));
+                executePhoto(catShelterServiceImpl.getDrivingDirections(chat_id));
             } else if (textMessage.equals(smile_cat + "Оформление пропуска")) {
-                executeSendMessage(catShelterMarkup.getCatShelterPhoneNumberSecurityFromDB(chat_id));
+                executeSendMessage(catShelterServiceImpl.getShelterPhoneNumberSecurityFromDB(chat_id));
             } else if (textMessage.equals(smile_cat + "Техника безопасности")) {
-                executeSendMessage(catShelterMarkup.getCatShelterSafetyPrecautionsSecurityFromDB(chat_id));
-            } else if (textMessage.equals(smile_cat + "Оставить номер телефона") || textMessage.equals(smile_dog + "Оставить номер телефона")) {
+                executeSendMessage(catShelterServiceImpl.getShelterSafetyPrecautionsSecurityFromDB(chat_id));
+            } else if (textMessage.equals(smile_cat + "Оставить номер телефона")
+                    || textMessage.equals(smile_dog + "Оставить номер телефона")) {
                 executeSendMessage(shelterKeyboardMarkup.contactSelection(chat_id));
                 isWaitNumber = true;
             } else if (textMessage.matches("^\\+\\d{1,}-\\d{3}-\\d{3}-\\d{2}-\\d{2}$") && isWaitNumber) {
                 executeSendMessage(shelterKeyboardMarkup.saveUserContact(chat_id, update));
                 isWaitNumber = false;
             } else if (textMessage.equals(smile_cat + " Связаться с волонтером")) {
-                executeSendMessage(catShelterMarkup.getVolunteersCatShelter(chat_id));
+                executeSendMessage(catShelterServiceImpl.getVolunteersShelter(chat_id));
 
 
             } else if (textMessage.equals(smile_dog + " Приют для собак")) {
-                executeSendMessage(DogShelterMarkup.dogBoardMarkup(chat_id));
+                executeSendMessage(dogShelterMarkup.boardMarkup(chat_id));
 
             } else if (textMessage.equals(smile_dog + " Узнать информацию о приюте")) {
-                executeSendMessage(DogShelterMarkup.dogShelterBoardMarkup(chat_id));
+                executeSendMessage(dogShelterMarkup.shelterBoardMarkup(chat_id));
             } else if (textMessage.equals(smile_dog + "Рассказать о приюте")) {
-                executeSendMessage(dogShelterMarkup.dogShelterStory(chat_id));
+                executeSendMessage(dogShelterMarkup.shelterStory(chat_id));
             } else if (textMessage.equals(smile_dog + "Расписание работы")) {
-                executeSendMessage(dogShelterMarkup.getDogWorkScheduleFromDB(chat_id));
+                executeSendMessage(dogShelterMarkup.getWorkScheduleFromDB(chat_id));
             } else if (textMessage.equals(smile_dog + "Адрес приюта")) {
-                executeSendMessage(dogShelterMarkup.getDogAddressFromDB(chat_id));
+                executeSendMessage(dogShelterMarkup.getAddressFromDB(chat_id));
             } else if (textMessage.equals(smile_dog + "Схема проезда")) {
-                executePhoto(dogShelterMarkup.getDogDrivingDirections(chat_id));
+                executePhoto(dogShelterMarkup.getDrivingDirections(chat_id));
             } else if (textMessage.equals(smile_dog + "Оформление пропуска")) {
-                executeSendMessage(dogShelterMarkup.getDogShelterPhoneNumberSecurityFromDB(chat_id));
+                executeSendMessage(dogShelterMarkup.getShelterPhoneNumberSecurityFromDB(chat_id));
             } else if (textMessage.equals(smile_dog + "Техника безопасности")) {
-                executeSendMessage(dogShelterMarkup.getDogShelterSafetyPrecautionsSecurityFromDB(chat_id));
+                executeSendMessage(dogShelterMarkup.getShelterSafetyPrecautionsSecurityFromDB(chat_id));
             } else if (textMessage.equals(smile_dog + " Связаться c волонтером")) {
-                executeSendMessage(dogShelterMarkup.getVolunteersDogShelter(chat_id));
+                executeSendMessage(dogShelterMarkup.getVolunteersShelter(chat_id));
 
             } else {
                 executeSendMessage(new SendMessage(chat_id, "Не понял Вас."));

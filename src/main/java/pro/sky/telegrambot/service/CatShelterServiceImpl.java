@@ -1,6 +1,5 @@
-package pro.sky.telegrambot.markup;
+package pro.sky.telegrambot.service;
 
-import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.KeyboardButton;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -8,32 +7,31 @@ import com.pengrad.telegrambot.request.SendPhoto;
 import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pro.sky.telegrambot.model.Client;
 import pro.sky.telegrambot.model.Volunteer;
 import pro.sky.telegrambot.repository.ClientRepository;
 import pro.sky.telegrambot.repository.DrivingDirectionsRepository;
 import pro.sky.telegrambot.repository.ShelterRepository;
-import pro.sky.telegrambot.service.VolunteerService;
 
 import javax.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.Objects;
 
 @Component
-public class CatShelterMarkup {
+public class CatShelterServiceImpl implements ShelterService {
 
     private final ShelterRepository shelterRepository;
     private final DrivingDirectionsRepository drivingDirectionsRepository;
     private final VolunteerService volunteerService;
 
     @Autowired
-    public CatShelterMarkup(ShelterRepository shelterRepository, DrivingDirectionsRepository drivingDirectionsRepository, VolunteerService volunteerService, ClientRepository clientRepository) {
+    public CatShelterServiceImpl(ShelterRepository shelterRepository, DrivingDirectionsRepository drivingDirectionsRepository, VolunteerService volunteerService, ClientRepository clientRepository) {
         this.shelterRepository = shelterRepository;
         this.drivingDirectionsRepository = drivingDirectionsRepository;
         this.volunteerService = volunteerService;
     }
 
-    public static SendMessage catBoardMarkup(Long chat_id) {
+    @Override
+    public SendMessage boardMarkup(Long chat_id) {
         String smile_arrow = EmojiParser.parseToUnicode(":arrow_left:");
         String smile_point_down = EmojiParser.parseToUnicode(":point_down:");
         String smile_cat = EmojiParser.parseToUnicode(":cat2:");
@@ -61,7 +59,8 @@ public class CatShelterMarkup {
         return sendMessage;
     }
 
-    public static SendMessage catShelterBoardMarkup(Long chat_id) {
+    @Override
+    public SendMessage shelterBoardMarkup(Long chat_id) {
 
         String smile_cat = EmojiParser.parseToUnicode(":cat2:");
         String smile_arrow = EmojiParser.parseToUnicode(":arrow_left:");
@@ -79,14 +78,11 @@ public class CatShelterMarkup {
 
         keyboardMarkup.addRow(keyboardButton6,keyboardButton3);
 
-
         KeyboardButton keyboardButton7 = new KeyboardButton(smile_cat + "Техника безопасности");
         KeyboardButton keyboardButton8 = new KeyboardButton(smile_cat + " Связаться с волонтером");
         keyboardMarkup.addRow(keyboardButton7, keyboardButton8);
         KeyboardButton keyboardButton9 = new KeyboardButton(smile_arrow + " В начало");
         keyboardMarkup.addRow(keyboardButton9);
-
-
 
         keyboardMarkup.resizeKeyboard(true);
         keyboardMarkup.oneTimeKeyboard(false);
@@ -97,31 +93,36 @@ public class CatShelterMarkup {
 
         return sendMessage;
     }
-    public SendMessage getCatWorkScheduleFromDB(Long chat_id) {
+    @Override
+    public SendMessage getWorkScheduleFromDB(Long chat_id) {
         String workSchedule = shelterRepository.findById(1L).orElseThrow(() -> new NotFoundException("Shelter is empty from DB")).getWorkSchedule();
         return new SendMessage(chat_id, workSchedule);
     }
-    public SendMessage getCatAddressFromDB(Long chat_id) {
+    @Override
+    public SendMessage getAddressFromDB(Long chat_id) {
         String address = shelterRepository.findById(1L).orElseThrow(() -> new NotFoundException("Shelter is empty from DB")).getAddress();
         return new SendMessage(chat_id, address);
     }
-    public SendPhoto getCatDrivingDirections(Long chat_id) {
+    @Override
+    public SendPhoto getDrivingDirections(Long chat_id) {
         return new SendPhoto(chat_id, Objects.requireNonNull(drivingDirectionsRepository.findById(1L).orElse(null)).getFilePath()).caption("Вот схема проезда к нашему приюту для кошек.");
     }
-    public SendMessage getCatShelterPhoneNumberSecurityFromDB(Long chat_id) {
+    @Override
+    public SendMessage getShelterPhoneNumberSecurityFromDB(Long chat_id) {
         String securityPhone = shelterRepository.findById(1L).orElseThrow(() -> new NotFoundException("Shelter is empty from DB")).getSecurity();
         return new SendMessage(chat_id, "Для оформления пропуска на территорию приюта позвоните по номеру телефона - " + securityPhone);
     }
-    public SendMessage getCatShelterSafetyPrecautionsSecurityFromDB(Long chat_id) {
+    @Override
+    public SendMessage getShelterSafetyPrecautionsSecurityFromDB(Long chat_id) {
         String safetyPrecautions = shelterRepository.findById(1L).orElseThrow(() -> new NotFoundException("Shelter is empty from DB")).getSafetyPrecautions();
         return new SendMessage(chat_id, safetyPrecautions);
     }
-
-    public SendMessage catShelterStory(Long chat_id) {
+    @Override
+    public SendMessage shelterStory(Long chat_id) {
         return new SendMessage(chat_id, "Наш приют занимается поиском новых хозяев для бездомных котиков");
     }
-
-    public SendMessage getVolunteersCatShelter(Long chat_id) {
+    @Override
+    public SendMessage getVolunteersShelter(Long chat_id) {
         List<Volunteer> volunteersDog = volunteerService.findVolunteerByShelterId(1L);
         SendMessage sendMessage;
         StringBuilder volunteersNumberResult = new StringBuilder();
