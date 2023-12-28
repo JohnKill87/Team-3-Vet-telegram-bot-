@@ -11,6 +11,7 @@ public class VolunteerGenerator {
     public static final Shelter SHELTER = new Shelter(
             "9:00 - 21:00", "ул. Воровского д.4", "+8800553535", "Проверка документов");
 
+
     public static Volunteer getVolunteer() {
         return new Volunteer(
                 5L,

@@ -105,6 +105,31 @@ public class VolunteerControllerWebMvcTest {
     }
 
     @Test
+    void getByShelterId_success() throws Exception{
+
+        Shelter shelter = new Shelter();
+        shelter.setId(5L);
+        shelter.setWorkSchedule("9:00 - 21:00");
+        shelter.setAddress("ул. Воровского д.4");
+        shelter.setSecurity("+8800553535");
+        shelter.setSafetyPrecautions("Проверка документов");
+
+        List<Volunteer> list = new ArrayList<>(List.of(
+                new Volunteer(ID, FIRSTNAME, PHONENUMBER, shelter),
+                new Volunteer(ID, FIRSTNAME, PHONENUMBER, shelter),
+                new Volunteer(ID, FIRSTNAME, PHONENUMBER, shelter)
+        ));
+
+        when(volunteerRepository.findByShelterId(shelter.getId())).thenReturn(list);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+                        .get("/volunteers/by-shelterId")
+                        .param("shelterId", String.valueOf(shelter.getId())))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
     void deleteVolunteer_success() throws Exception{
 
         Volunteer volunteer = new Volunteer();

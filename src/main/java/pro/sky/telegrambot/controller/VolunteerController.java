@@ -61,6 +61,25 @@ public class VolunteerController {
     }
 
     @Operation(
+            summary = "Поиск волонтёров по id приюта",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Поиск волонтёров",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Volunteer.class)
+                            )
+                    )
+            })
+
+    @GetMapping("/by-shelterId")
+    public ResponseEntity<List<Volunteer>> getByShelterId(@Parameter(description = "Поиск волонтёра по id приюта")
+                                                          @RequestParam Long shelterId) {
+        return ResponseEntity.ok(volunteerService.findVolunteerByShelterId(shelterId));
+    }
+
+    @Operation(
             summary = "Удаление волонтёра из приюта",
             responses = {
             @ApiResponse(

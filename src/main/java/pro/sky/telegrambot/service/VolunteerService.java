@@ -29,6 +29,16 @@ public class VolunteerService {
     }
 
     /**
+     * Поиск волонтёра по его идентификатору приюта в БД.
+     * Используется метод репозитория {@link VolunteerRepository#findByShelterId(Long)}
+     * @param shelterId Идентификатор нужного приюта.
+     * @return Найденного волонтёр.
+     */
+    public List<Volunteer> findVolunteerByShelterId(Long shelterId) {
+        return volunteerRepository.findByShelterId(shelterId);
+    }
+
+    /**
      * Поиск волонтёра по его идентификатору в БД.
      * Используется метод репозитория {@link org.springframework.data.jpa.repository.JpaRepository#findById(Object)}
      * @param id Идентификатор искомого волонтёра.
