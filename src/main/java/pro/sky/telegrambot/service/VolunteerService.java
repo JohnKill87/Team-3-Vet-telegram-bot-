@@ -29,16 +29,6 @@ public class VolunteerService {
     }
 
     /**
-     * Поиск волонтёра по его идентификатору в БД.
-     * Используется метод репозитория {@link org.springframework.data.jpa.repository.JpaRepository#findById(Object)}
-     * @param id Идентификатор искомого волонтёра.
-     * @return Найденного волонтёр.
-     */
-    public Optional<Volunteer> findVolunteerById(Long id) {
-        return volunteerRepository.findById(id);
-    }
-
-    /**
      * Поиск волонтёра по его идентификатору приюта в БД.
      * Используется метод репозитория {@link VolunteerRepository#findByShelterId(Long)}
      * @param shelterId Идентификатор нужного приюта.
@@ -49,13 +39,24 @@ public class VolunteerService {
     }
 
     /**
+     * Поиск волонтёра по его идентификатору в БД.
+     * Используется метод репозитория {@link org.springframework.data.jpa.repository.JpaRepository#findById(Object)}
+     * @param id Идентификатор искомого волонтёра.
+     * @return Найденного волонтёр.
+     */
+    public Optional<Volunteer> findVolunteerById(Long id) {
+        return volunteerRepository.findById(id);
+    }
+
+    /**
      * Удаление волонтёра из БД.
      * Используется метод репозитория {@link org.springframework.data.jpa.repository.JpaRepository#delete(Object)}
-     * @param volunteer Удаляемый волонтёр.
+     * @param id Удаляемого волонтёра.
      * @return Удаленного волонтёра.
      */
-    public Volunteer deleteVolunteer(Volunteer volunteer) {
-        volunteerRepository.delete(volunteer);
-        return volunteer;
+    public Volunteer deleteVolunteer(Long id) {
+        Volunteer volunteerForDelete = volunteerRepository.findById(id).get();
+        volunteerRepository.deleteById(id);
+        return volunteerForDelete;
     }
 }
