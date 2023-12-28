@@ -37,7 +37,7 @@ public class VolunteerController {
             )
     })
     @PostMapping
-    public ResponseEntity<Volunteer> add (@Parameter(description = "Добавление волонтёра")
+    public ResponseEntity<Volunteer> addVolunteer (@Parameter(description = "Добавление волонтёра")
                                               @RequestBody Volunteer volunteer) {
         return ResponseEntity.ok(volunteerService.addVolunteer(volunteer));
     }
@@ -55,27 +55,9 @@ public class VolunteerController {
             )
     })
     @GetMapping("/by-id")
-    public ResponseEntity<Optional<Volunteer>> getById(@Parameter(description = "Поиск волонтёра по id")
+    public ResponseEntity<Optional<Volunteer>> getVolunteerById(@Parameter(description = "Поиск волонтёра по id")
                                                            @RequestParam Long id) {
         return ResponseEntity.ok(volunteerService.findVolunteerById(id));
-    }
-
-    @Operation(
-            summary = "Поиск волонтёра по id приюта",
-            responses = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Поиск волонтёра",
-                    content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = Volunteer.class)
-                    )
-            )
-    })
-    @GetMapping("/shelter/{shelterId}")
-    public ResponseEntity<List<Volunteer>> getByShelterId(@Parameter(description = "Поиск волонтёра по id приюта")
-                                                              @RequestParam Long shelterId) {
-        return ResponseEntity.ok(volunteerService.findVolunteerByShelterId(shelterId));
     }
 
     @Operation(
@@ -91,8 +73,8 @@ public class VolunteerController {
             )
     })
     @DeleteMapping
-    public ResponseEntity<Volunteer> deleteVolunteer(@Parameter(description = "Удаление волонтёра")
-                                                         @RequestBody Volunteer volunteer) {
-        return ResponseEntity.ok(volunteerService.deleteVolunteer(volunteer));
+    public ResponseEntity<Volunteer> deleteVolunteerById(@Parameter(description = "Удаление волонтёра")
+                                                         @RequestParam Long id) {
+        return ResponseEntity.ok(volunteerService.deleteVolunteer(id));
     }
 }

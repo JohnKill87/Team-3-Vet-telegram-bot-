@@ -39,23 +39,14 @@ public class VolunteerService {
     }
 
     /**
-     * Поиск волонтёра по его идентификатору приюта в БД.
-     * Используется метод репозитория {@link VolunteerRepository#findByShelterId(Long)}
-     * @param shelterId Идентификатор нужного приюта.
-     * @return Найденного волонтёр.
-     */
-    public List<Volunteer> findVolunteerByShelterId(Long shelterId) {
-        return volunteerRepository.findByShelterId(shelterId);
-    }
-
-    /**
      * Удаление волонтёра из БД.
      * Используется метод репозитория {@link org.springframework.data.jpa.repository.JpaRepository#delete(Object)}
-     * @param volunteer Удаляемый волонтёр.
+     * @param id Удаляемого волонтёра.
      * @return Удаленного волонтёра.
      */
-    public Volunteer deleteVolunteer(Volunteer volunteer) {
-        volunteerRepository.delete(volunteer);
-        return volunteer;
+    public Volunteer deleteVolunteer(Long id) {
+        Volunteer volunteerForDelete = volunteerRepository.findById(id).get();
+        volunteerRepository.deleteById(id);
+        return volunteerForDelete;
     }
 }
