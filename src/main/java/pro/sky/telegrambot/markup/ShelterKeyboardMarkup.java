@@ -17,7 +17,7 @@ public class ShelterKeyboardMarkup {
     }
 
     public SendMessage contactSelection(Long chat_id) {
-        return new SendMessage(chat_id, "Введите номер телефона в формате +7-912-345-67-89");
+        return new SendMessage(chat_id, "Введите номер телефона в формате +7 912 345 67 89");
     }
     public SendMessage saveUserContact(Long chat_id, Update update) {
         String firstName = update.message().chat().firstName();
