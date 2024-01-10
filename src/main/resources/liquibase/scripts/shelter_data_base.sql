@@ -34,3 +34,21 @@ id SERIAL PRIMARY KEY,
 first_name TEXT NOT NULL,
 phone_number TEXT NOT NULL
 );
+
+--changeset roma:4
+
+CREATE TABLE report_tg (
+id SERIAL PRIMARY KEY,
+date_added timestamp NOT NULL,
+general_well_being TEXT NOT NULL,
+photo_name TEXT NOT NULL,
+check_report boolean NOT NULL,
+clients_id BIGINT REFERENCES clients(id)
+);
+
+--changeset roma:5
+
+ALTER TABLE clients
+ADD COLUMN took_a_pet boolean,
+ADD COLUMN chat_id integer,
+ADD COLUMN date_time_to_took timestamp;

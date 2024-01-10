@@ -1,6 +1,9 @@
 package pro.sky.telegrambot.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -10,8 +13,21 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "took_a_pet")
+    private Boolean tookAPet;
+
+    @Column(name = "chat_id")
+    private int chatId;
+    @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "date_time_to_took")
+    private LocalDateTime dateTimeToTook;
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private List<Report> reports = new ArrayList<>();
 
     public Client() {
     }
@@ -61,5 +77,13 @@ public class Client {
         int result = firstName != null ? firstName.hashCode() : 0;
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         return result;
+    }
+
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
     }
 }
