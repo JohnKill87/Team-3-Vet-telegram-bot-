@@ -31,8 +31,11 @@ FOREIGN KEY (shelter_id) REFERENCES shelter(id)
 
 CREATE TABLE clients (
 id SERIAL PRIMARY KEY,
-first_name TEXT NOT NULL,
-phone_number TEXT NOT NULL
+first_name TEXT,
+phone_number TEXT,
+took_a_pet boolean,
+chat_id integer,
+date_time_to_took timestamp
 );
 
 --changeset roma:4
@@ -45,10 +48,3 @@ photo_name TEXT NOT NULL,
 check_report boolean NOT NULL,
 clients_id BIGINT REFERENCES clients(id)
 );
-
---changeset roma:5
-
-ALTER TABLE clients
-ADD COLUMN took_a_pet boolean,
-ADD COLUMN chat_id integer,
-ADD COLUMN date_time_to_took timestamp;
