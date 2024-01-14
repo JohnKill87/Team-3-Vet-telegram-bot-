@@ -6,7 +6,6 @@ import pro.sky.telegrambot.model.Volunteer;
 
 import java.util.List;
 
-@Repository
 public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
 
     List<Volunteer> findByShelterId (Long shelterId);

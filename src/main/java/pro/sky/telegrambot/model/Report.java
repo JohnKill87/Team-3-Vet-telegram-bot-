@@ -1,5 +1,7 @@
 package pro.sky.telegrambot.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
@@ -26,8 +28,9 @@ public class Report {
     @Column(name = "check_report")
     private boolean checkReport;
 
+    @JoinColumn(name = "clients_id")
     @ManyToOne
-    @JoinColumn(name = "client_id")
+    @JsonIgnore
     private Client client;
 
     public Report() {
