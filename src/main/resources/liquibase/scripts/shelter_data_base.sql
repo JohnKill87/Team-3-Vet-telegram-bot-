@@ -46,7 +46,7 @@ date_added timestamp NOT NULL,
 general_well_being TEXT,
 photo_name TEXT NOT NULL,
 check_report boolean NOT NULL,
-client_id BIGINT REFERENCES clients(id)
+clients_id BIGINT REFERENCES clients(id)
 );
 
 --changeset roma:5
