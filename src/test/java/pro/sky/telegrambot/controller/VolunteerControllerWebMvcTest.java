@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import pro.sky.telegrambot.generator.VolunteerGenerator;
+import pro.sky.telegrambot.listener.TelegramBotUpdatesListener;
 import pro.sky.telegrambot.model.Volunteer;
 import pro.sky.telegrambot.model.shelter.Shelter;
 import pro.sky.telegrambot.repository.ShelterRepository;
@@ -45,6 +46,9 @@ public class VolunteerControllerWebMvcTest {
 
     @MockBean
     private ShelterRepository shelterRepository;
+
+    @MockBean
+    private TelegramBotUpdatesListener telegramBotUpdatesListener;
 
     @SpyBean
     private VolunteerService volunteerService;

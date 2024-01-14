@@ -34,7 +34,7 @@ id SERIAL PRIMARY KEY,
 first_name TEXT,
 phone_number TEXT,
 took_a_pet boolean,
-chat_id integer,
+chat_id BIGINT,
 date_time_to_took timestamp
 );
 
@@ -43,8 +43,43 @@ date_time_to_took timestamp
 CREATE TABLE report_tg (
 id SERIAL PRIMARY KEY,
 date_added timestamp NOT NULL,
-general_well_being TEXT NOT NULL,
+general_well_being TEXT,
 photo_name TEXT NOT NULL,
 check_report boolean NOT NULL,
 clients_id BIGINT REFERENCES clients(id)
+);
+
+--changeset roma:5
+
+CREATE TABLE animal_dog (
+id SERIAL PRIMARY KEY,
+dog_name TEXT,
+age INT,
+color TEXT,
+breed TEXT,
+validity boolean,
+shelter_id INT,
+FOREIGN KEY (shelter_id) REFERENCES shelter(id)
+);
+
+--changeset roma:6
+
+CREATE TABLE animal_cat (
+id SERIAL PRIMARY KEY,
+cat_name TEXT,
+age INT,
+color TEXT,
+breed TEXT,
+validity boolean,
+shelter_id INT,
+FOREIGN KEY (shelter_id) REFERENCES shelter(id)
+);
+
+--changeset roma:7
+
+CREATE TABLE owner (
+id SERIAL PRIMARY KEY,
+client_name TEXT,
+animal_name TEXT,
+date_owner timestamp
 );

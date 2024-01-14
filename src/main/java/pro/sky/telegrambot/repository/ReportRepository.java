@@ -10,8 +10,7 @@ public interface ReportRepository extends JpaRepository<Report,Long> {
 
     Report findReportByPhotoNameIdAndGeneralWellBeingAndCheckReport(String photoName, String o, boolean b);
 
-    Collection<Report> getByClientId(Long clientId);
-
     Collection<Report> findByCheckReport(boolean checkReport);
 
+    Report findReportById(Long id);
 }
