@@ -20,7 +20,7 @@ public class Client {
     private Boolean tookAPet;
 
     @Column(name = "chat_id")
-    private int chatId;
+    private Long chatId;
     @Column(name = "phone_number")
     private String phoneNumber;
 
@@ -85,5 +85,29 @@ public class Client {
 
     public void setReports(List<Report> reports) {
         this.reports = reports;
+    }
+
+    public void setDateTimeToTook(LocalDateTime dateTimeToTook) {
+        this.dateTimeToTook = dateTimeToTook;
+    }
+
+    public LocalDateTime getDateTimeToTook() {
+        return dateTimeToTook;
+    }
+
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
+    }
+
+    public Long getChatId() {
+        return chatId;
+    }
+
+    public void setTookAPet(Boolean tookAPet) {
+        this.tookAPet = tookAPet;
+    }
+
+    public Boolean getTookAPet() {
+        return tookAPet;
     }
 }

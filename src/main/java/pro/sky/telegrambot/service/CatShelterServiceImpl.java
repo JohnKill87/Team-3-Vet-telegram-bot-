@@ -19,9 +19,9 @@ import java.util.Objects;
 @Component
 public class CatShelterServiceImpl implements ShelterService {
 
-    private final ShelterRepository shelterRepository;
-    private final DrivingDirectionsRepository drivingDirectionsRepository;
-    private final VolunteerService volunteerService;
+    private ShelterRepository shelterRepository;
+    private DrivingDirectionsRepository drivingDirectionsRepository;
+    private VolunteerService volunteerService;
 
     @Autowired
     public CatShelterServiceImpl(ShelterRepository shelterRepository, DrivingDirectionsRepository drivingDirectionsRepository, VolunteerService volunteerService, ClientRepository clientRepository) {

@@ -5,10 +5,13 @@ import pro.sky.telegrambot.model.Report;
 
 import java.util.Collection;
 
+public interface ReportRepository extends JpaRepository<Report,Long> {
+    Report findReportByPhotoNameIdAndCheckReport(String photoNameId, boolean b);
 
-public interface ReportRepository extends JpaRepository<Report, Long> {
+    Report findReportByPhotoNameIdAndGeneralWellBeingAndCheckReport(String photoName, String o, boolean b);
 
     Collection<Report> getByClientId(Long clientId);
 
     Collection<Report> findByCheckReport(boolean checkReport);
+
 }
