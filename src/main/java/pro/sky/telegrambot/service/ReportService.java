@@ -1,8 +1,14 @@
 package pro.sky.telegrambot.service;
 
+import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.SendResponse;
 import javassist.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import pro.sky.telegrambot.model.Client;
 import pro.sky.telegrambot.model.Report;
+import pro.sky.telegrambot.repository.ClientRepository;
 import pro.sky.telegrambot.repository.ReportRepository;
 
 import java.util.ArrayList;
@@ -14,9 +20,14 @@ import java.util.Optional;
 public class ReportService {
 
     private final ReportRepository reportRepository;
+    private final ClientRepository clientRepository;
+    private final TelegramBot telegramBot;
 
-    public ReportService(ReportRepository reportRepository) {
+
+    public ReportService(ReportRepository reportRepository, ClientRepository clientRepository, TelegramBot telegramBot) {
         this.reportRepository = reportRepository;
+        this.clientRepository = clientRepository;
+        this.telegramBot = telegramBot;
     }
 
     /**
@@ -28,11 +39,24 @@ public class ReportService {
     public Optional<Report> findReportById(Long id) {
         return reportRepository.findById(id);
     }
-//    public List<Report> findReportByClientId(Long clientsId) {
-//        return reportRepository.getByClientId(clientsId);
-//    }
 
     public Collection<Report> findReportByCheckReport(boolean checkReport) {
         return reportRepository.findByCheckReport(checkReport);
+    }
+
+    public String acceptanceOfTheReport(Long id, boolean checkReport) {
+        Report findReport = reportRepository.findReportById(id);
+        if (checkReport == findReport.isCheckReport()) {
+            return "Отчет уже принят";
+        } else {
+            findReport.setCheckReport(checkReport);
+            reportRepository.save(findReport);
+            return "Отчет принят";
+        }
+    }
+
+    public SendResponse sendMessage(String firstName, String message) {
+        Client findClient = clientRepository.findClientByFirstName(firstName);
+        return telegramBot.execute(new SendMessage(findClient.getChatId(), message));
     }
 }
