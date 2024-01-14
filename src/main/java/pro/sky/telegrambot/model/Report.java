@@ -28,7 +28,7 @@ public class Report {
     @Column(name = "check_report")
     private boolean checkReport;
 
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "clients_id")
     @ManyToOne
     @JsonIgnore
     private Client client;
