@@ -40,10 +40,21 @@ public class ReportService {
         return reportRepository.findById(id);
     }
 
+    /**
+     * Поиск отчета по параметру boolean в БД.
+     * @param checkReport Параметр искомого отчета.
+     * @return Найденного отчета.
+     */
     public Collection<Report> findReportByCheckReport(boolean checkReport) {
         return reportRepository.findByCheckReport(checkReport);
     }
 
+    /**
+     * Принятие отчета по его идентификатору в БД.
+     * @param id Идентификатор искомого отчета.
+     * @param checkReport Параметр искомого отчета.
+     * @return Принятого отчета.
+     */
     public String acceptanceOfTheReport(Long id, boolean checkReport) {
         Report findReport = reportRepository.findReportById(id);
         if (checkReport == findReport.isCheckReport()) {
@@ -55,6 +66,12 @@ public class ReportService {
         }
     }
 
+    /**
+     * Отправка сообщения волонтером клиенту о состоянии отчета.
+     * @param firstName Имя искомого клиента.
+     * @param message Отправляемое сообщение.
+     * @return Отправленное сообщение.
+     */
     public SendResponse sendMessage(String firstName, String message) {
         Client findClient = clientRepository.findClientByFirstName(firstName);
         return telegramBot.execute(new SendMessage(findClient.getChatId(), message));
