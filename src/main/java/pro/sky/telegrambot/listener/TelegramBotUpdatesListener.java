@@ -259,6 +259,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 report.setCheckReport(false);
                 if (clientRep != null) {
                     report.setClient(clientRep);
+                    clientRep.setDateTimeToTook(LocalDateTime.now());
+                    clientRepository.save(clientRep);
                 }
                 reportRepository.save(report);
                 photoCheckButton = false;
