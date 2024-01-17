@@ -199,13 +199,17 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
                 Client clientRep = clientRepository.findClientByFirstName(update.message().chat().firstName());
 
-                if (clientRep==null) {
+                if (clientRep == null) {
                     Client client = new Client();
                     client.setFirstName(update.message().chat().firstName());
                     client.setChatId(chat_id);
                     client.setTookAPet(true);
                     client.setDateTimeToTook(LocalDateTime.now());
                     clientRepository.save(client);
+                } else {
+                    clientRep.setTookAPet(true);
+                    clientRep.setChatId(chat_id);
+                    clientRepository.save(clientRep);
                 }
 
             }else if (textMessage.equals(smile_dog + " Прислать отчет о питомце")) {
