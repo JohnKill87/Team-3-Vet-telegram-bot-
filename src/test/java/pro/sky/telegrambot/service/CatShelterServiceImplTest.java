@@ -97,6 +97,4 @@ class CatShelterServiceImplTest {
 
         assertEquals(expected.getParameters(), result.getParameters());
     }
-
-
 }

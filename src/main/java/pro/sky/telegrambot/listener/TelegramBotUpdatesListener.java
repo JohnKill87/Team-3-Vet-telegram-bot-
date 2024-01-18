@@ -38,6 +38,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TelegramBotUpdatesListener implements UpdatesListener {
@@ -198,13 +199,17 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
                 Client clientRep = clientRepository.findClientByFirstName(update.message().chat().firstName());
 
-                if (clientRep==null) {
+                if (clientRep == null) {
                     Client client = new Client();
                     client.setFirstName(update.message().chat().firstName());
                     client.setChatId(chat_id);
                     client.setTookAPet(true);
                     client.setDateTimeToTook(LocalDateTime.now());
                     clientRepository.save(client);
+                } else {
+                    clientRep.setTookAPet(true);
+                    clientRep.setChatId(chat_id);
+                    clientRepository.save(clientRep);
                 }
 
             }else if (textMessage.equals(smile_dog + " Прислать отчет о питомце")) {
@@ -212,8 +217,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
 //                Сдача текстовой части отчета!
             } else if (reportCheckButton) {
-                String photoName = update.message().chat().firstName() +"/"+ "photo-animal";
 
+                String photoName = "C:/photoAnimal/" + update.message().chat().firstName();
                 Report report = reportRepository.findReportByPhotoNameIdAndGeneralWellBeingAndCheckReport(photoName,null,false);
                 if (report.getGeneralWellBeing() == null) {
                     report.setGeneralWellBeing(update.message().text());
@@ -224,38 +229,18 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             } else {
                 executeSendMessage(new SendMessage(chat_id, "Не понял Вас."));
             }
-
+                //                Сдача фото отчета!
             } else if (update.message().photo()!=null && photoCheckButton) {
-                // Получение информации о фото
-                Message message = update.message(); // Получите сообщение с фото от бота
-                PhotoSize photo = Arrays.stream(message.photo())
-                        .max(Comparator.comparing(PhotoSize::fileSize))
-                        .orElse(null);
-                String fileId = photo.fileId();
 
-                // Получение пути к фото
-                GetFileResponse fileResponse = telegramBot.execute(new GetFile(fileId));
-                String filePath = fileResponse.file().filePath();
-                //Создание директории
-                Path filePathDir = Path.of(photoAnimalDir, update.message().chat().firstName()+" photo-animal/" + fileId +  "." +getFileExtension(filePath));
-                try {
-                    Files.createDirectories(filePathDir.getParent());
-                    Files.deleteIfExists(filePathDir);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                createDirectoriesAndSavePhoto(update);
 
-                // Сохранение фото в директорию
-                String fileUrl = "https://api.telegram.org/file/bot"
-                        + "6956888569:AAEFrZelVSc43_vrzZ6vVG1rNio1lePqzVc" + "/" + filePath;
-                String savePath = "C:/photoAnimal/" + update.message().chat().firstName()+" photo-animal/" + fileId + "." + getFileExtension(filePath);
-                saveFile(fileUrl, savePath);
+                String firstName = update.message().chat().firstName();
 
-                Client clientRep = clientRepository.findClientByFirstName(update.message().chat().firstName());
+                Client clientRep = clientRepository.findClientByFirstName(firstName);
 
                 Report report = new Report();
                 report.setDateAdded(LocalDateTime.now());
-                report.setPhotoNameId(message.chat().firstName() +"/photo-animal");
+                report.setPhotoNameId("C:/photoAnimal/" + firstName);
                 report.setCheckReport(false);
                 if (clientRep != null) {
                     report.setClient(clientRep);
@@ -272,12 +257,39 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                 "3. Изменения в поведении: отказ от старых привычек, приобретение новых."));
 
 
-            } else {
-                executeSendMessage(new SendMessage(chat_id, "Вы прислали не фото!"));
             }
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
+
+    private void createDirectoriesAndSavePhoto(Update update) {
+        // Получение информации о фото
+        Message message = update.message(); // Получите сообщение с фото от бота
+        String firstName = message.chat().firstName();
+
+        PhotoSize photo = Arrays.stream(message.photo())
+                .max(Comparator.comparing(PhotoSize::fileSize))
+                .orElse(null);
+        String fileId = Objects.requireNonNull(photo).fileId();
+
+        // Получение пути к фото
+        GetFileResponse fileResponse = telegramBot.execute(new GetFile(fileId));
+        String filePath = fileResponse.file().filePath();
+        //Создание директории
+        Path filePathDir = Path.of(photoAnimalDir, firstName + "/" + fileId +  "." +getFileExtension(filePath));
+        try {
+            Files.createDirectories(filePathDir.getParent());
+            Files.deleteIfExists(filePathDir);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Сохранение фото в директорию
+        String fileUrl = "https://api.telegram.org/file/bot6956888569:AAEFrZelVSc43_vrzZ6vVG1rNio1lePqzVc/" + filePath;
+        String savePath = "C:/photoAnimal/" + firstName + "/" + fileId + "." + getFileExtension(filePath);
+        saveFile(fileUrl, savePath);
+    }
+
     private String getFileExtension(String filePath) {
         int lastDotIndex = filePath.lastIndexOf('.');
         if (lastDotIndex != -1) {
