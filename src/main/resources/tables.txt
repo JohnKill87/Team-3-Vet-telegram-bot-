@@ -1,0 +1,101 @@
+Таблица с общей информацией о приютах Generalnfo
+Id | name | text
+generalHello - текст приветствия бота(можно оставить текстом в коде)
+dailyReport - текст с информацией о форме ежедневного отчета для усыновителей
+badDailyReport - текст с информацией о том, что усыновитель плохо заполняет ежедневный отчет
+probationSuccesfull -текст стандартного сообщения о прохождении испытательного срока
+probationFourteen - текст о назначении усыновителю испытательного срока в 14 дней
+probationThirty - текст о назначении усыновителю испытательного срока в 30 дней
+probationFail - текст о непрохождении испытательного срока и инструкция по дальнейшим шагам.
+
+
+
+Таблица со схемами проезда к двум приютам ShelterDriverDirection
+// нужно решить, храним картинки в локалке, грузим в облако и в таблицу вносим ссылку, либо сразу в коде ссылаемся на облако.
+Id | картинка
+dogShelterDriverDirection - картинка со схемой проезда в приют собак
+catShelterDriverDirection - картинка со схемой проезда в приют кошек
+
+
+Таблица с информацией о приюте собак DogShelterInfo
+Id | name | text
+dogShelterInfo - информация о приюте
+dogShelterPlace - где находится
+dogShelterSchedule - расписание работы приюта
+dogShelterAccessMode - правила пропуска на территорию
+dogShelterSecurityDetails - контактные данные охраны для оформления пропуска на машину
+dogShelterBehaviorRules - правила нахождения и общения с животными
+dogShelterTakeInfo - как взять животное из приюта
+dogShelterRulesBeforeTake - правила знакомства с животными до того, как забрать из приюта
+dogShelterDocumentsToTake - список документов для того, чтобы забрать из приюта
+dogShelterTransportationRecom - список рекомендаций по транспортировке животного
+dogShelterHomeRecom - список рекомендаций для обустройства дома для животного
+dogShelterHomeRecomAdult - список рекомендаций для обустройства дома для взрослого животного
+dogShelterHomeRecomInvalid - список рекомендаций для обустройства дома для животного с       ограниченными возможностями
+dogShelterHandlerRecom - советы кинолога по первичному обращению с собакой
+dogShelterListOfDogHandler - список рекомендаций по проверенным кинологам
+dogShelterListOfFailure - список причин, почему могут отказать забрать животное из приюта
+
+
+
+Таблица с информацией о приюте кошек CatShelterInfo
+Id | name | text
+catShelterInfo - информация о приюте
+catShelterPlace - где находится
+catShelterSchedule - расписание работы приюта
+catShelterAccessMode - правила пропуска на территорию
+catShelterSecurityDetails - контактные данные охраны для оформления пропуска на машину
+catShelterBehaviorRules - правила нахождения и общения с животными
+catShelterTakeInfo - как взять животное из приюта
+catShelterRulesBeforeTake - правила знакомства с животными до того, как забрать из приюта
+catShelterDocumentsToTake - список документов для того, чтобы забрать из приюта
+catShelterTransportationRecom - список рекомендаций по транспортировке животного
+catShelterHomeRecom - список рекомендаций для обустройства дома для животного
+catShelterHomeRecomAdult - список рекомендаций для обустройства дома для взрослого животного
+catShelterHomeRecomInvalid - список рекомендаций для обустройства дома для животного с ограниченными возможностями
+catShelterListOfFailure - список причин, почему могут отказать забрать животное из приюта
+
+
+Таблица с данными о животный в приюте для собак DogShelter
+Id | dogName | breed | age | color | validity
+dogName – кличка
+age – возраст
+color - окрас
+breed – порода
+validity – наличие «особенностей» у животного (без особенностей – true, с особенностями - false)
+
+
+Таблица с данными о животный в приюте для кошек CatShelter
+Id | catName | breed | age | color | validity
+catName – кличка
+age – возраст
+color - окрас
+breed – порода
+validity – наличие «особенностей» у животного (без особенностей – true, с особенностями - false)
+
+
+Таблица гостей Guest
+//нужен ли id с телеграма, или достаточно имени?
+Id | tgId | userName
+
+
+Таблица с усыновителями собак DogOwner
+Id | userName | dogName | date
+date – дата усыновления животного
+
+
+Таблица с усыновителями кошек CatOwner
+Id | userName | dogName | date
+date – дата усыновления животного
+
+Таблица с волонтерами Volunteers
+Id | username | phoneNumber
+phoneNumber – маска +7-9**-***-**-**
+
+
+Таблица с ежедневным отчетом о животном DailyReport
+Id | username | PetPhoto() | diet | petHealth | behaviorChange | date
+PetPhoto – фото животного(ссылка на облачное хранилище телеграм)
+diet – рацион животного
+petHealth – самочувствие и привыкание к новому месту
+behaviorChange – изменение в поведении (изменение привычек)
